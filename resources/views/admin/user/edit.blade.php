@@ -33,5 +33,39 @@
                 </div>
             </form>
         </div>
+        @if ($boards->count()>0)
+        <div class="card-body table-responsive ">
+            <table class="table table-bordered overflow-auto">
+                <thead>
+                    <tr>
+                        <th>Board ID</th>
+                        <th>Board Name</th>
+                        <th>Board Tasks</th>
+                        <th>Board Description</th>
+                        {{-- <th>Delete</th> --}}
+                    </tr>
+                </thead>
+                <tbody >
+                    {{-- {{dd($tasks)}} --}}
+                    @foreach($boards as $item)
+                    <tr class="border">
+                        <td>{{ $item->id }}</td>
+                        <td>{{$item->board_name}}</td>
+                        <td>{{$tasks[$loop->index]['tasks']}}</td>
+                        <td>{{ $item->board_description }}</td>
+                        {{-- <td>
+                            <form style="display:inline-block" action="{{ route('admin-contacts.destroy',$item->id) }}" method="POST">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-primary" type="submit">Delete</button>
+                            </form>
+    
+                        </td> --}}
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
     </div>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Board;
 use App\Models\Contact;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -38,7 +39,18 @@ class AdminController extends Controller
     }
     public function edit_user(User $user)
     {
-        return view('admin.user.edit',compact('user'));
+        $boards = Board::where('owner',$user['id'])->get();
+        $tasks=[];
+        foreach ($boards as $key => $value) {
+            $sb_task = Task::where('board_id',$value['id'])->get();
+            // array_push($tasks,['board_id'=>$value['id'],'board_tasks'=>$sb_task]);
+            array_push($tasks,[
+                'id'=>$value['id'],
+                'tasks'=>count($sb_task)
+            ]);
+        }
+        // dd($tasks);
+        return view('admin.user.edit',compact('user','boards','tasks'));
     }
     public function update_user(Request $request,$id)
     {
